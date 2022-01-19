@@ -1,14 +1,31 @@
 export default class {
-  constructor(p, initialVel1) {
+  constructor(p, x, y, s, v, m) {
     this.p = p;
-    this.vel = initialVel1;
-    this.x = p.width / 2;
-    this.y = p.height /2;
+    this.x = x;
+    this.y = y;
+    this.s = s;
+    this.v = v;
+    this.m = m; 
   }
 
-  draw() {
+  show() {
     const {p} = this
-    p.rect(this.x, this.y, 200, 200);
-    this.x += this.vel
+    p.rect(this.x, this.y, this.s, this.s);
+  }
+
+  update(){
+    this.x+=this.v;
+  }
+
+  isColliding(block){
+    return !(this.x > block.x+block.s || this.x+this.s < block.x)
+  }
+
+  collide(block){
+    return (this.m-block.m)*this.v/(this.m+block.m) +     2*block.m*block.v/(this.m+block.m);
+  }
+
+  setVel(newV){
+    this.v = newV;
   }
 }

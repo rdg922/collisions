@@ -5,7 +5,7 @@ import Sketch from "./sketch/Sketch"
 const defaultSettings = {
   mass1: 100,
   initialVel1: 0,
-  initiavlVel2: -1
+  initialVel2: -1
 }
 
 class App extends React.Component {
