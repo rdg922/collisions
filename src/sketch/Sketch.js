@@ -1,7 +1,6 @@
 import Block from './Block'
 
-export default (p, {initialVel1, initiavlVel2, mass1}) =>{
-  // TODO: read state from function parameters
+export default (p, {initialVel, mass}) =>{
   let bl1;
   let bl2;
   let v1;
@@ -11,6 +10,9 @@ export default (p, {initialVel1, initiavlVel2, mass1}) =>{
   let timeSteps = Math.pow(10, digits - 1) / 2;
 
   p.setup = () => {
+    p.frameRate(60);
+    p.textSize(32);
+    p.textAlign('LEFT', 'TOP')
     p.createCanvas(600, 200);
     bl1 = new Block(p, 50, 175, 25, 0, 1);
     bl2 = new Block(
@@ -18,8 +20,10 @@ export default (p, {initialVel1, initiavlVel2, mass1}) =>{
       200,
       200 - 25 * digits,
       25 * digits,
-      -0.75 / timeSteps,
-      Math.pow(100, digits - 1)
+      -initialVel / timeSteps,
+      Math.pow(mass, digits-1)
+//      Math.pow(mass, digits-1)
+      //mass
     );
   }
 
@@ -45,6 +49,7 @@ export default (p, {initialVel1, initiavlVel2, mass1}) =>{
     }
     bl1.show();
     bl2.show();
-    p.print(count);
+    p.text('Collisions: ', 0, 0)
+    console.log(count)
   }
 }
