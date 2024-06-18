@@ -11,9 +11,18 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
+    this.state = {
+      ...defaultSettings,
+      collisionCount: 0,
+    };
   }
 
-  Sketch = (p) => Sketch(p, this.state || defaultSettings);
+  Sketch = (p) =>
+    Sketch(p, {
+      initialVel: this.state.initialVel,
+      mass: this.state.mass,
+      updateCollisionCount: this.updateCollisionCount,
+    });
 
   componentDidMount() {
     this.startSketch();
@@ -23,29 +32,33 @@ class App extends React.Component {
     this.stopSketch();
   }
 
-  componentWillUpdate() {
-    this.stopSketch();
-  }
-
   startSketch() {
     this.myP5 = new p5(this.Sketch, this.myRef.current);
   }
 
   stopSketch() {
-    this.myP5.remove();
+    if (this.myP5) this.myP5.remove();
   }
 
   changeMass = (e) => {
     e.preventDefault();
-    this.setState({ ...this.state, mass: e.target.value }, this.startSketch);
+    this.setState({ mass: e.target.value });
   };
 
   changeVelocity = (e) => {
     e.preventDefault();
-    this.setState(
-      { ...this.state, initialVel: e.target.value },
-      this.startSketch
-    );
+    this.setState({ initialVel: e.target.value });
+  };
+
+  resetSimulation = () => {
+    this.setState({ ...defaultSettings, collisionCount: 0 }, () => {
+      this.stopSketch();
+      this.startSketch();
+    });
+  };
+
+  updateCollisionCount = (count) => {
+    this.setState({ collisionCount: count });
   };
 
   render() {
@@ -58,8 +71,6 @@ class App extends React.Component {
             <div>Mass:</div>
             <input
               type="number"
-              id="tentacles"
-              name="tentacles"
               min="10"
               max="100"
               defaultValue={defaultSettings.mass}
@@ -67,17 +78,19 @@ class App extends React.Component {
             />
           </div>
           <div className="group">
-            <div>Velocity</div>
+            <div>Velocity:</div>
             <input
               type="number"
-              id="tentacles"
-              name="tentacles"
-              min="10"
+              min="1"
               max="100"
               defaultValue={defaultSettings.initialVel}
               onChange={this.changeVelocity}
             />
           </div>
+          <button onClick={this.resetSimulation}>Reset</button>
+        </div>
+        <div className="counter">
+          <div>Collision Count: {this.state.collisionCount}</div>
         </div>
       </div>
     );

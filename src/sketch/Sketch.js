@@ -1,6 +1,6 @@
-import Block from './Block'
+import Block from "./Block";
 
-export default (p, {initialVel, mass}) =>{
+export default (p, { initialVel, mass, updateCollisionCount }) => {
   let bl1;
   let bl2;
   let v1;
@@ -8,11 +8,13 @@ export default (p, {initialVel, mass}) =>{
   let count = 0;
   let digits = 7;
   let timeSteps = Math.pow(10, digits - 1) / 2;
+  let lastUpdate = 0;
+  const updateInterval = 100; // Update every 100 ms
 
   p.setup = () => {
     p.frameRate(60);
     p.textSize(32);
-    p.textAlign('LEFT', 'TOP')
+    p.textAlign("LEFT", "TOP");
     p.createCanvas(600, 200);
     bl1 = new Block(p, 50, 175, 25, 0, 1);
     bl2 = new Block(
@@ -21,11 +23,9 @@ export default (p, {initialVel, mass}) =>{
       200 - 25 * digits,
       25 * digits,
       -initialVel / timeSteps,
-      Math.pow(mass, digits-1)
-//      Math.pow(mass, digits-1)
-      //mass
+      Math.pow(mass, digits - 1),
     );
-  }
+  };
 
   p.draw = () => {
     p.background(220);
@@ -37,19 +37,22 @@ export default (p, {initialVel, mass}) =>{
         v2 = bl2.collide(bl1);
         bl1.setVel(v1);
         bl2.setVel(v2);
-        //bl1.x=bl2.x-bl1.s;
         count++;
       }
 
       if (bl1.x < 0) {
         bl1.v *= -1;
-        //bl1.x=0;
         count++;
       }
     }
     bl1.show();
     bl2.show();
-    p.text('Collisions: ', 0, 0)
-    console.log(count)
-  }
-}
+    p.text("Collisions: " + count, 0, 0);
+
+    let currentTime = p.millis();
+    if (currentTime - lastUpdate > updateInterval) {
+      updateCollisionCount(count);
+      lastUpdate = currentTime;
+    }
+  };
+};
