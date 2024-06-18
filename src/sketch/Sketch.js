@@ -1,6 +1,6 @@
 import Block from "./Block";
 
-export default (p, { initialVel, mass, updateCollisionCount }) => {
+export default function sketch(p, { initialVel, mass, updateCollisionCount }) {
   let bl1;
   let bl2;
   let v1;
@@ -55,4 +55,4 @@ export default (p, { initialVel, mass, updateCollisionCount }) => {
       lastUpdate = currentTime;
     }
   };
-};
+}

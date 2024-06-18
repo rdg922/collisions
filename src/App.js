@@ -51,10 +51,16 @@ class App extends React.Component {
   };
 
   resetSimulation = () => {
-    this.setState({ ...defaultSettings, collisionCount: 0 }, () => {
-      this.stopSketch();
-      this.startSketch();
-    });
+    this.stopSketch();
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        collisionCount: 0,
+      }),
+      () => {
+        this.startSketch();
+      },
+    );
   };
 
   updateCollisionCount = (count) => {
@@ -63,18 +69,19 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <div ref={this.myRef} />
+      <div className="App bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
+        <div ref={this.myRef} className="mb-8" />
 
-        <div className="form">
+        <div className="form flex flex-col items-center space-y-4">
           <div className="group">
             <div>Mass:</div>
             <input
               type="number"
               min="10"
               max="100"
-              defaultValue={defaultSettings.mass}
+              value={this.state.mass}
               onChange={this.changeMass}
+              className="bg-gray-800 text-white p-2 rounded"
             />
           </div>
           <div className="group">
@@ -83,14 +90,33 @@ class App extends React.Component {
               type="number"
               min="1"
               max="100"
-              defaultValue={defaultSettings.initialVel}
+              value={this.state.initialVel}
               onChange={this.changeVelocity}
+              className="bg-gray-800 text-white p-2 rounded"
             />
           </div>
-          <button onClick={this.resetSimulation}>Reset</button>
+          <button
+            onClick={this.resetSimulation}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Reset
+          </button>
         </div>
-        <div className="counter">
+        <div className="counter mt-8">
           <div>Collision Count: {this.state.collisionCount}</div>
+        </div>
+        <div className="acknowledgement bg-gray-800 text-white p-4 mt-8 rounded-lg max-w-md text-center">
+          <p>
+            This is a recreation of the phenomenon as mentioned by 3Blue1Brown.
+            Watch the video{" "}
+            <a
+              href="https://www.youtube.com/watch?v=jsYwFizhncE"
+              className="text-blue-400 underline"
+            >
+              here
+            </a>
+            .
+          </p>
         </div>
       </div>
     );
