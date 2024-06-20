@@ -1,9 +1,11 @@
 # Collisions
 
-Approximates the numbers of pi
+Approximates the numbers of pi through a physics simulation:
+
+
+![Screenshot from 2024-06-20 11-50-53](https://github.com/rdg922/collisions/assets/27434998/115c3018-fafe-4dfe-8b65-3c45ae5bf96d)
 
 ## Acknowledgements
-
 This project is inspired by the phenomenon explained by 3Blue1Brown. Watch the video here.
 
 This was made with help from my friend Brady Aber as a small project for our AP Physics 1 teacher.
